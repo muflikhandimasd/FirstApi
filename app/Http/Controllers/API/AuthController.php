@@ -164,9 +164,40 @@ class AuthController extends Controller
 
     public function changePassword(Request $request, $user_id)
     {
-        $user = User::findOrFail($user_id);
+        $user = User::findorFail($user_id);
 
-        // if(!Hash::check($request->get('password'), $request->get()))
+        if (!(Hash::check($request->get('password'), $user->password))) {
+            return $this->responError(0, "password salah!");
+        }
+
+        if (strcmp($request->get('password'), $request->get('new_password')) == 0) {
+            return response()->json([
+                'status'              => 0,
+                'pesan'               => 'password jangan sama'
+            ], 400);
+        }
+
+        $validasi = Validator::make($request->all(), [
+            'password'                => 'required',
+            'new_password'            => 'required|confirmed'
+        ]);
+
+        if ($validasi->fails()) {
+            $val = $validasi->errors()->all();
+            return $this->responError(0, $val[0]);
+        }
+
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        //jka password baru sama dengan lamamaka error
+
+        //dd($request);
+        return response()->json([
+            'status'           => 1,
+            'pesan'            => "$user->name, Edit Berhasil",
+            'result'           => $user
+        ], Response::HTTP_OK);
     }
 
     public function responError($status, $msg)

@@ -6,6 +6,7 @@ use App\Models\Menu;
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
 class RestaurantController extends Controller
@@ -75,9 +76,54 @@ class RestaurantController extends Controller
         ], Response::HTTP_OK);
     }
 
-    public function editResto()
+
+
+    public function cari(Request $request)
     {
+        $request->search;
+
+        $menu = Menu::where('name_menu', 'like', "%" . $request->search . "%")->orwhere('category', 'like', "%" . $request->search . "%")->first();
+        if (!$menu) {
+            return $this->responError(0, "$request->search, tidak ada");
+        }
+        $menus = Menu::where('name_menu', 'like', "%" . $request->search . "%")->orwhere('category', 'like', "%" . $request->search . "%")->get();
+        return response()->json([
+            'status'    => 1,
+            'result'    => $menus
+        ], Response::HTTP_OK);
     }
+
+    public function editResto(Request $request, $resto_id)
+    {
+        $resto = Restaurant::findOrFail($resto_id);
+
+        $validasi = Validator::make($request->all(), [
+            'name_resto'  => 'required',
+            'address'   => 'required',
+            'open_serve'   => 'required',
+            'phone'   => 'required'
+        ]);
+
+        if ($validasi->fails()) {
+            $val = $validasi->errors()->all();
+            return $this->responError(0, $val[0]);
+        }
+
+        $resto->update([
+            'name_resto'  => $request->name_resto,
+            'address'   => $request->address,
+            'open_serve'   => $request->open_serve,
+            'phone'   => $request->phone
+        ]);
+
+        return response()->json([
+            'status'   => 1,
+            'message'  => "Resto berhasil diupdate",
+            'result'  => $resto
+        ], Response::HTTP_OK);
+    }
+
+
 
     public function getAllMenu()
     {
@@ -89,12 +135,28 @@ class RestaurantController extends Controller
         ], Response::HTTP_OK);
     }
 
-    public function responSuccess($status, $message)
+    public function hapusMenuPadaResto($resto_id, $menu_id)
     {
+        //cari resto
+        $resto                        = Restaurant::find($resto_id);
+
+        if (!$resto) {
+            return $this->responError(0, "resto pada resto tidak di temukan");
+        }
+
+        //cari resto
+        $menu                        = Menu::find($menu_id);
+
+        if (!$menu) {
+            return $this->responError(0, "menu pada resto tidak di temukan");
+        }
+
+        $menu->delete();
+
         return response()->json([
-            'status'   => $status,
-            'message'  => $message
-        ], Response::HTTP_OK);
+            'status'                  => 1,
+            'pesan'                   => "$menu->name_menu, menu berhasil di hapus"
+        ], Response::HTTP_NOT_FOUND);
     }
 
     public function responError($status, $message)

@@ -31,6 +31,9 @@ Route::post('/register', [AuthController::class, 'daftar']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::put('/edit/{user_id}', [AuthController::class, 'editProfile']);
 
+// Change password
+Route::put('/change-password/{id}', [AuthController::class, 'changePassword']);
+
 // CRUD Resto dan menunya
 Route::post('/add/resto-and-menu', [RestaurantController::class, 'createRestoMenu']);
 Route::get('/resto/{id}', [RestaurantController::class, 'getRestoMenu']);
@@ -40,3 +43,9 @@ Route::put('/edit/resto/{resto_id}', [RestaurantController::class, 'editResto'])
 
 // Get Semua Menu
 Route::get('/menu', [RestaurantController::class, 'getAllMenu']);
+
+// Cari menu
+Route::get('/cari', [RestaurantController::class, 'cari']);
+
+// Delete menu
+Route::delete('/hapus/menu/{resto_id}/{menu_id}', [RestaurantController::class, 'hapusMenuPadaResto']);
