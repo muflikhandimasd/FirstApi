@@ -15,9 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/wisata', [WisataController::class, 'wisata'])->name('wisata');
+Route::get('/', [WisataController::class, 'wisata'])->name('wisata');
 
-Route::get('/', [DoaController::class, 'doa'])->name('doa');
+// Route::get('/', [DoaController::class, 'doa'])->name('doa');
 Route::get('/post-data', [DoaController::class, 'postData'])->name('post');
 Route::get('/kategori', [DoaController::class, 'kategori'])->name('kategori');
 Route::post('/posting', [DoaController::class, 'posting'])->name('posting');
