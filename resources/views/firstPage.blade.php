@@ -67,11 +67,11 @@
 
 </style>
 
+
 <body class="container latar">
     <div class="text-center">
         <a href="https://sharing-laravel-project.herokuapp.com/">
-            <img class="gambar" src="<img src=" https://img.icons8.com/clouds/100/000000/pi.png" />
-            alt="Logo-brand">
+            <img class="gambar" src="https://img.icons8.com/clouds/100/000000/pi.png">
         </a>
     </div>
 
