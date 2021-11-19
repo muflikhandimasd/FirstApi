@@ -12,6 +12,6 @@ class WisataController extends Controller
         $response = Http::get('https://ictjuara.000webhostapp.com/api/wisata');
         $data = $response->json();
         $data = $data['data'];
-        return view('wisata', compact('data'));
+        return view('firstPage', compact('data'));
     }
 }
