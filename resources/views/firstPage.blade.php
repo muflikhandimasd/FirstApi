@@ -70,9 +70,8 @@
 <body class="container latar">
     <div class="text-center">
         <a href="https://sharing-laravel-project.herokuapp.com/">
-            <img class="gambar"
-                src="https://images.unsplash.com/photo-1637139498630-9a580b24fa75?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=870&q=80"
-                alt="Logo-brand">
+            <img class="gambar" src="<img src=" https://img.icons8.com/clouds/100/000000/pi.png" />
+            alt="Logo-brand">
         </a>
     </div>
 
